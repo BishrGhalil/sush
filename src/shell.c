@@ -30,21 +30,22 @@
 void 
 shell_loop(void)
 {
-    char *shell_prompt = "$ ";
+    char *shell_prompt;
     char *line;
     char **args;
     int status = 1;
 
     while(status) {
+	shell_prompt = prompt();
 	line = readline(shell_prompt);
 	args = parser(line);
 	status = execute(args);
 
 	free(line);
 	free(args);
+	free(shell_prompt);
     }
 
-    /* free(shell_prompt); */
 }
 
 void

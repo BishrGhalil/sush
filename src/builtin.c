@@ -17,10 +17,10 @@ ht_table *ht; // built in commands hashtable
 void ht_init()
 {
     ht = ht_new();
-    ht_insert(ht, "cd", "changes the current directory", &cmd_cd);
-    ht_insert(ht, "help", "prints this help message", &cmd_help);
-    ht_insert(ht, "history", "prints commands history", &cmd_history);
-    ht_insert(ht, "exit", "exits sush", &cmd_exit);
+    ht_insert(ht, "cd", "change the current directory", &cmd_cd);
+    ht_insert(ht, "help", "print this help message", &cmd_help);
+    ht_insert(ht, "history", "print commands history", &cmd_history);
+    ht_insert(ht, "exit", "exit sush", &cmd_exit);
 }
 
 // Builtin function implementations.
@@ -55,7 +55,7 @@ int cmd_help(char **args)
     printf("Built in commands\n");
 
     for (int i = 0; i < ht->count; i++){
-        printf("    %s\t%s\n", ht->items[i]->key, ht->items[i]->helpmsg);
+        printf("    %-20s\t%s\n", ht->items[i]->key, ht->items[i]->helpmsg);
     }
 
     return 1;
@@ -111,13 +111,11 @@ char *prompt()
 	gethostname(hostname, 124);
         getcwd(cwd, sizeof(cwd));
 
-	strcpy(prompt_str, "[");
-	strcat(prompt_str, hostname);
-	strcat(prompt_str, "@");
+	strcpy(prompt_str, "");
 	strcat(prompt_str, loguser);
         strcat(prompt_str, ":");
         strcat(prompt_str, cwd);
-        strcat(prompt_str, "] ");
+        strcat(prompt_str, " $ ");
         return prompt_str;
 }
 
