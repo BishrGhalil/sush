@@ -5,7 +5,7 @@ A command line interface , written in C.
 > under development
 
 # Install
-```console
+```bash
 git clone https://github.com/BishrGhalil/sush.git
 cd sush
 make
@@ -14,7 +14,7 @@ sudo make install
 
 
 # Uninstall
-```console
+```bash
 sudo make uninstall
 ```
 
