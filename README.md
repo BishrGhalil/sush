@@ -1,5 +1,5 @@
-# sush __ - A shell that sucks less |Build Status|
-==================================================
+# sush - A shell that sucks less.
+===
 
 A command line interface , written in C.
 > under development
