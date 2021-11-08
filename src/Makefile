@@ -10,6 +10,7 @@ main: $(SRC)
 
 install:
 	cp sush /usr/bin/sush
+	cp inputrc /etc/inputrc
 
 uninstall:
 	rm -rf /usr/bin/sush

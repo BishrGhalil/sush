@@ -1,4 +1,4 @@
-/* shell.c -- the main shell filei
+/* shell.c -- the main shell file
 
    This file is part of SuSh, A Shell that Sucks less.  SuSh is free
    software; no one can prevent you from reading the source code, or
@@ -24,7 +24,9 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
+#include <errno.h>
 #include <readline/readline.h>
+
 #include "builtin.h"
 
 void 
@@ -61,8 +63,12 @@ sighandler(int sig)
 int
 main(int argc, char **argv)
 {
+    errno = 0;
     // Load config files.
-    
+    if (putenv("INPUTRC=/etc/inputrc") != 0) {
+	fprintf(stderr, "sush: %s", strerror(errno));
+    }
+
     // Run command loop.
     ht_init();
     sigaction(SIGINT, &(struct sigaction){ .sa_handler = sighandler }, NULL);
