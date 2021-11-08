@@ -26,8 +26,10 @@
 #include <unistd.h>
 #include <errno.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 
 #include "builtin.h"
+#include "config.h"
 
 void 
 shell_loop(void)
@@ -40,8 +42,12 @@ shell_loop(void)
     while(status) {
 	shell_prompt = prompt();
 	line = readline(shell_prompt);
+	if (strlen(line) < 1) {
+	    continue;
+	}
 	args = parser(line);
 	status = execute(args);
+	add_history(line);
 
 	free(line);
 	free(args);
@@ -64,8 +70,11 @@ int
 main(int argc, char **argv)
 {
     errno = 0;
+    // Init history
+    using_history();
+
     // Load config files.
-    if (putenv("INPUTRC=/etc/inputrc") != 0) {
+    if (putenv(INPUTRC) != 0) {
 	fprintf(stderr, "sush: %s", strerror(errno));
     }
 
@@ -73,6 +82,7 @@ main(int argc, char **argv)
     ht_init();
     sigaction(SIGINT, &(struct sigaction){ .sa_handler = sighandler }, NULL);
     shell_loop();
+
     // Cleanup.
     
     return EXIT_SUCCESS;

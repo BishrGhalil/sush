@@ -8,6 +8,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <readline/history.h>
+
 #include "builtin.h"
 #include "hashtable.h"
 
@@ -63,6 +65,16 @@ int cmd_help(char **args)
 
 int cmd_history(char **args)
 {
+    HISTORY_STATE *myhist = history_get_history_state ();
+
+    HIST_ENTRY **mylist = history_list ();
+
+    printf ("\nhistory session for %s\n\n", getenv("USER"));
+    for (int i = 0; i < myhist->length; i++) {
+        printf ("%d %s  %s\n", i, mylist[i]->line, mylist[i]->timestamp);
+    }
+
+    putchar ('\n');
     return 1;
 }
 
@@ -105,15 +117,15 @@ char *prompt()
 	}
 
         char cwd[COMMAND_SIZE];
-	char *loguser = getenv("LOGNAME");
+	char *user = getenv("USER");
 	char hostname[124];
 
 	gethostname(hostname, 124);
         getcwd(cwd, sizeof(cwd));
 
 	strcpy(prompt_str, "");
-	strcat(prompt_str, loguser);
-        strcat(prompt_str, ":");
+	/* strcat(prompt_str, user); */
+        /* strcat(prompt_str, ":"); */
         strcat(prompt_str, cwd);
         strcat(prompt_str, " $ ");
         return prompt_str;
