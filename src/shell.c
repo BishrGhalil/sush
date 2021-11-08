@@ -40,7 +40,12 @@ shell_loop(void)
     int status = 1;
 
     while(status) {
+	time_t time_now = time(0);
+	char *time_str = ctime(&time_now);
+	time_str[strlen(time_str) - 1] = '\0';
+
 	shell_prompt = prompt();
+
 	line = readline(shell_prompt);
 	if (strlen(line) < 1) {
 	    continue;
@@ -48,6 +53,7 @@ shell_loop(void)
 	args = parser(line);
 	status = execute(args);
 	add_history(line);
+	add_history_time(time_str);
 
 	free(line);
 	free(args);

@@ -71,7 +71,7 @@ int cmd_history(char **args)
 
     printf ("\nhistory session for %s\n\n", getenv("USER"));
     for (int i = 0; i < myhist->length; i++) {
-        printf ("%d %s  %s\n", i, mylist[i]->line, mylist[i]->timestamp);
+        printf ("%d %-20s%s\n", i + 1, mylist[i]->line, mylist[i]->timestamp);
     }
 
     putchar ('\n');
