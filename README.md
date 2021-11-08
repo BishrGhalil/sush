@@ -7,7 +7,7 @@ A command line interface , written in C.
 # Install
 ```bash
 git clone https://github.com/BishrGhalil/sush.git
-cd sush
+cd sush/src
 make
 sudo make install
 ```
