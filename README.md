@@ -22,13 +22,15 @@ sudo make uninstall
 ## bugs:
    - [ ] Find unfreed allocation
 ## features:
-- [ ] a better prompt:
+- [o] a better prompt:
+  - [X] prompt parser
   - [X] get login name
   - [X] get current working directory
   - [X] get host name
   - [ ] get current time
   - [ ] parse the time
-  - [ ] prompt parser
+  - [ ] return status
+  - [ ] replace $HOME with '~'
 - [X] prev commands list (readline.h)
   - [ ] up to show prev commands
 - [ ] quoting and backslash escaping:
