@@ -25,16 +25,17 @@
 #include <signal.h>
 #include <unistd.h>
 #include <errno.h>
+#include <stdbool.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 
 #include "builtin.h"
 #include "config.h"
+#include "prompt.c"
 
 void 
 shell_loop(void)
 {
-    char *shell_prompt;
     char *line;
     char **args;
     int status = 1;
@@ -44,22 +45,27 @@ shell_loop(void)
 	char *time_str = ctime(&time_now);
 	time_str[strlen(time_str) - 1] = '\0';
 
-	shell_prompt = prompt();
+	while (true) {
+	    char *shell_prompt = prompt();
+	    line = readline(shell_prompt);
+	    if (strcmp(line, "exit") == 0) {
+		free(line);
+		return;
+	    }
 
-	line = readline(shell_prompt);
-	if (strlen(line) < 1) {
-	    continue;
+	    if (strlen(line) < 1) {
+		continue;
+	    }
+	    args = parser(line);
+	    status = execute(args);
+	    add_history(line);
+	    add_history_time(time_str);
+
+	    free(line);
+	    free(args);
+	/* free(shell_prompt); */
 	}
-	args = parser(line);
-	status = execute(args);
-	add_history(line);
-	add_history_time(time_str);
-
-	free(line);
-	free(args);
-	free(shell_prompt);
     }
-
 }
 
 void
