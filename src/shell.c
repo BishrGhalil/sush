@@ -32,20 +32,20 @@
 #include "builtin.h"
 #include "config.h"
 #include "prompt.c"
+#include "datetime.h"
 
 void 
 shell_loop(void)
 {
     char *line;
     char **args;
+    char *time_str;
     int status = 1;
 
     while(status) {
-	time_t time_now = time(0);
-	char *time_str = ctime(&time_now);
-	time_str[strlen(time_str) - 1] = '\0';
 
 	while (true) {
+	    time_str = dt_datetime();
 	    char *shell_prompt = prompt();
 	    line = readline(shell_prompt);
 	    if (strcmp(line, "exit") == 0) {

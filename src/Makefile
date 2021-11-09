@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-ggdb
-SRC=shell.c builtin.c hashtable.c
+SRC=shell.c builtin.c hashtable.c datetime.c
 LIBS=-lreadline -lm
 
 all: main

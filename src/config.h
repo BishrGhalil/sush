@@ -70,8 +70,8 @@
 // %m	==>	Month
 // %y 	==>	Year
 // %a	==> 	Day
-// %t	==> 	Current time in 24-hour format
+// %T	==> 	Current time in 24-hour format
 // %t	==>	Current time in 12-hour format
-const char *PROMPT =  UNDER "%h" RSTUNDER "@%l" BOLD "%d " FCOLOR_RED "> " RESET;
+const char *PROMPT =   "%d " FCOLOR_RED BOLD "@%m %y %a> " RESET;
 
 #endif

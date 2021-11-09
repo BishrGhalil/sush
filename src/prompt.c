@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "prompt.h"
 #include "config.h"
+#include "datetime.h"
 
 #define PROMPT_BUFFER 256
 
@@ -44,8 +45,7 @@ prompt()
     shell_prompt->size = sizeof(char) * PROMPT_BUFFER;
     shell_prompt->str = (char *) malloc(shell_prompt->size);
     strcpy(shell_prompt->str, PROMPT);
-    int len = strlen(PROMPT);
-    for (int i = 0; i < len; i++) {
+    for (int i = 0; i < strlen(shell_prompt->str); i++) {
 	if (shell_prompt->str[i] == '%') {
 	    switch(shell_prompt->str[i + 1]) {
 		case 'd':
@@ -65,6 +65,31 @@ prompt()
 		case 'h':
 		    gethostname(host, 64);
 		    strintr(shell_prompt->str, i + 2, host);
+		    break;
+		case 'D':
+		    char *date = dt_date();
+		    strintr(shell_prompt->str, i + 2, date);
+		    free(date);
+		    break;
+		case 'm':
+		    char *month = dt_month();
+		    strintr(shell_prompt->str, i + 2, month);
+		    free(month);
+		    break;
+		case 'y':
+		    char *year = dt_year();
+		    strintr(shell_prompt->str, i + 2, year);
+		    free(year);
+		    break;
+		case 'a':
+		    char *day = dt_day();
+		    strintr(shell_prompt->str, i + 2, day);
+		    free(day);
+		    break;
+		case 'T':
+		    char *time = dt_time24();
+		    strintr(shell_prompt->str, i + 2, time);
+		    free(time);
 		    break;
 	    }
 	}
