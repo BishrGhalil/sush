@@ -2,6 +2,8 @@
 #define CONFIG_H_
 #define INPUTRC		"INPUTRC=/etc/inputrc"
 
+// Prompt styling
+
 #define RESET		"\e[0m"
 
 #define BOLD		"\e[1m"
@@ -72,6 +74,6 @@
 // %a	==> 	Day
 // %T	==> 	Current time in 24-hour format
 // %t	==>	Current time in 12-hour format
-const char *PROMPT =  "%d " FCOLOR_RED BOLD "@%t> " RESET;
+const char *PROMPT = "%d " FCOLOR_RED BOLD "> " RESET;
 
 #endif

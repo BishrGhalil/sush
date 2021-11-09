@@ -48,7 +48,17 @@ prompt()
     for (int i = 0; i < strlen(shell_prompt->str); i++) {
 	if (shell_prompt->str[i] == '%') {
 	    switch(shell_prompt->str[i + 1]) {
+		case '?':
+		    break;
 		case 'd':
+		    cwd = getcwd(cwd, PROMPT_BUFFER);
+		    if (!cwd) {
+			break;
+		    } 
+		    strintr(shell_prompt->str, i + 2, cwd);
+		    i += strlen(cwd) - 1;
+		    break;
+		case '~':
 		    cwd = getcwd(cwd, PROMPT_BUFFER);
 		    if (!cwd) {
 			continue;

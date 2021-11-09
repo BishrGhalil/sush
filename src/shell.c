@@ -42,29 +42,32 @@ shell_loop(void)
     char *time_str;
     int status = 1;
 
-    while(status) {
+    while(true) {
 
-	while (true) {
-	    time_str = dt_datetime();
-	    char *shell_prompt = prompt();
-	    line = readline(shell_prompt);
-	    if (strcmp(line, "exit") == 0) {
-		free(line);
-		return;
-	    }
-
-	    if (strlen(line) < 1) {
-		continue;
-	    }
-	    args = parser(line);
-	    status = execute(args);
-	    add_history(line);
-	    add_history_time(time_str);
-
-	    free(line);
-	    free(args);
-	/* free(shell_prompt); */
+	if (status <= 0) {
+	    break;
 	}
+	time_str = dt_datetime();
+	char *shell_prompt = prompt();
+	if(!(line = readline(shell_prompt))) {
+	    continue;
+	}
+	if (strcmp(line, "exit") == 0) {
+	    free(line);
+	    return;
+	}
+
+	if (strlen(line) < 1) {
+	    continue;
+	}
+	args = parser(line);
+	status = execute(args);
+	add_history(line);
+	add_history_time(time_str);
+
+	free(line);
+	free(args);
+    /* free(shell_prompt); */
     }
 }
 
