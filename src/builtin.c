@@ -108,29 +108,6 @@ int sysexec(char **args)
     return 1;
 }
 
-/* char *prompt() */
-/* { */
-/*         char *prompt_str = (char *) malloc(sizeof(char ) * COMMAND_SIZE); */
-/* 	if (!prompt_str) { */
-/* 	    fprintf(stderr, "sush: allocation error\n"); */
-/* 	    return NULL; */
-/* 	} */
-
-/*         char cwd[COMMAND_SIZE]; */
-/* 	char *user = getenv("USER"); */
-/* 	char hostname[124]; */
-
-/* 	gethostname(hostname, 124); */
-/*         getcwd(cwd, sizeof(cwd)); */
-
-/* 	strcpy(prompt_str, ""); */
-/* 	/1* strcat(prompt_str, user); *1/ */
-/*         /1* strcat(prompt_str, ":"); *1/ */
-/*         strcat(prompt_str, cwd); */
-/*         strcat(prompt_str, " $ "); */
-/*         return prompt_str; */
-/* } */
-
 int execute(char **args)
 {
         int j = 0;
