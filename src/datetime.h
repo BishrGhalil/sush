@@ -3,6 +3,7 @@
 
 char *dt_datetime(void);
 char *dt_time24(void);
+char *dt_time12(void);
 char *dt_date(void);
 char *dt_day(void);
 char *dt_month(void);

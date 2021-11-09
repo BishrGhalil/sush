@@ -54,6 +54,7 @@ prompt()
 			continue;
 		    } 
 		    strintr(shell_prompt->str, i + 2, cwd);
+		    i += strlen(cwd) - 1;
 		    break;
 		case 'l':
 		    login = getlogin();
@@ -61,35 +62,48 @@ prompt()
 			continue;
 		    }
 		    strintr(shell_prompt->str, i + 2, login);
+		    i += strlen(login) - 1;
 		    break;
 		case 'h':
 		    gethostname(host, 64);
 		    strintr(shell_prompt->str, i + 2, host);
+		    i += strlen(host) - 1;
 		    break;
 		case 'D':
 		    char *date = dt_date();
 		    strintr(shell_prompt->str, i + 2, date);
+		    i += strlen(date) - 1;
 		    free(date);
 		    break;
 		case 'm':
 		    char *month = dt_month();
 		    strintr(shell_prompt->str, i + 2, month);
+		    i += strlen(month) - 1;
 		    free(month);
 		    break;
 		case 'y':
 		    char *year = dt_year();
 		    strintr(shell_prompt->str, i + 2, year);
+		    i += strlen(year) - 1;
 		    free(year);
 		    break;
 		case 'a':
 		    char *day = dt_day();
 		    strintr(shell_prompt->str, i + 2, day);
+		    i += strlen(day) - 1;
 		    free(day);
 		    break;
 		case 'T':
-		    char *time = dt_time24();
-		    strintr(shell_prompt->str, i + 2, time);
-		    free(time);
+		    char *time24 = dt_time24();
+		    strintr(shell_prompt->str, i + 2, time24);
+		    i += strlen(time24) - 1;
+		    free(time24);
+		    break;
+		case 't':
+		    char *time12 = dt_time12();
+		    strintr(shell_prompt->str, i + 2, time12);
+		    i += strlen(time12) - 1;
+		    free(time12);
 		    break;
 	    }
 	}

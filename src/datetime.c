@@ -75,6 +75,18 @@ dt_time24(void)
 }
 
 char *
+dt_time12()
+{
+    char *time12 = dt_time24();
+    if (time12[0] == '1' && time12[1] > 2) {
+	time12[0] = '0';
+	time12[1] -= 2;
+    }
+    time12[8] = '\0';
+    return time12;
+}
+
+char *
 dt_date(void)
 {
     char *date = (char *) malloc(sizeof(char) * 13);

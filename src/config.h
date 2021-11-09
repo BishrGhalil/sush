@@ -72,6 +72,6 @@
 // %a	==> 	Day
 // %T	==> 	Current time in 24-hour format
 // %t	==>	Current time in 12-hour format
-const char *PROMPT =   "%d " FCOLOR_RED BOLD "@%m %y %a> " RESET;
+const char *PROMPT =  "%d " FCOLOR_RED BOLD "@%t> " RESET;
 
 #endif
