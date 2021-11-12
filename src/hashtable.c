@@ -1,4 +1,4 @@
-/* hash_table.c -- hash_table source file.
+/* hashtable.c -- hash table source file.
 
    This file is part of SuSh, A Shell that Sucks less.  SuSh is free
    software; no one can prevent you from reading the source code, or

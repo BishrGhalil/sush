@@ -34,6 +34,23 @@
 #include "prompt.c"
 #include "datetime.h"
 
+int sigint_flag = 0;
+
+void
+sighandler(int sig){
+
+    rl_free_line_state ();
+    rl_cleanup_after_signal ();
+    RL_UNSETSTATE(RL_STATE_ISEARCH|RL_STATE_NSEARCH|RL_STATE_VIMOTION|RL_STATE_NUMERICARG|RL_STATE_MULTIKEY);
+    rl_line_buffer[rl_point = rl_end = rl_mark = 0] = 0;
+    write(1, "\n", 1);
+    sigint_flag++;
+    /* rl_on_new_line(); */
+    /* rl_replace_line("", 0); */
+    /* rl_redisplay(); */
+    return;
+}
+
 void 
 shell_loop(void)
 {
@@ -42,43 +59,37 @@ shell_loop(void)
     char *time_str;
     int status = 1;
 
-    while(true) {
+    while(status) {
+
 
 	if (status <= 0) {
 	    break;
 	}
+
 	time_str = dt_datetime();
 	char *shell_prompt = prompt();
 	if(!(line = readline(shell_prompt))) {
 	    continue;
 	}
+
 	if (strcmp(line, "exit") == 0) {
 	    free(line);
 	    return;
 	}
 
-	if (strlen(line) < 1) {
-	    continue;
-	}
 	args = parser(line);
 	status = execute(args);
-	add_history(line);
-	add_history_time(time_str);
+	if (line && *line) {
+	    add_history(line);
+	    add_history_time(time_str);
+	}
 
 	free(line);
 	free(args);
-    /* free(shell_prompt); */
+	if (shell_prompt) {
+	    free(shell_prompt);
+	}
     }
-}
-
-void
-sighandler(int sig)
-{
-    write(1, "\n", 1);
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
-    return;
 }
 
 int

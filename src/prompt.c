@@ -1,4 +1,27 @@
+/* prompt.c -- the prompt functions
+
+   This file is part of SuSh, A Shell that Sucks less.  SuSh is free
+   software; no one can prevent you from reading the source code, or
+   giving it to someone else.  This file is copyrighted under the GNU
+   General Public License.
+
+   Copyright (C) 2021 Bishr Ghalil.
+
+   This file is part of SuSh.
+
+   SuSh is distributed in the hope that it will be useful, but WITHOUT
+   ANY WARRANTY.  No author or distributor accepts responsibility to
+   anyone for the consequences of using it or for whether it serves
+   any particular purpose or works at all.
+
+   Everyone is granted permission to copy, modify and redistribute
+   SuSh, but only under the conditions described in the GNU General
+   Public License.
+
+  Initial author: Bishr Ghalil
+*/
 #include <stdlib.h>
+#include <regex.h>
 #include "prompt.h"
 #include "config.h"
 #include "datetime.h"
@@ -34,6 +57,44 @@ strintr(char *restrict dest, size_t n, char *restrict substr)
     return dest;
 }
 
+char *str_replace(char *orig, char *rep, char *with) {
+    char *result;
+    char *ins;
+    char *tmp;
+    int len_rep;
+    int len_with;
+    int len_front;
+    int count;
+
+    if (!orig || !rep)
+        return NULL;
+    len_rep = strlen(rep);
+    if (len_rep == 0)
+        return NULL;
+    if (!with)
+        with = "";
+    len_with = strlen(with);
+
+    ins = orig;
+    for (count = 0; tmp = strstr(ins, rep); ++count) {
+        ins = tmp + len_rep;
+    }
+
+    tmp = result = malloc(strlen(orig) + (len_with - len_rep) * count + 1);
+
+    if (!result)
+        return NULL;
+    while (count--) {
+        ins = strstr(orig, rep);
+        len_front = ins - orig;
+        tmp = strncpy(tmp, orig, len_front) + len_front;
+        tmp = strcpy(tmp, with) + len_with;
+        orig += len_front + len_rep; // move to next "end of rep"
+    }
+    strcpy(tmp, orig);
+    return result;
+}
+
 char *
 prompt()
 {
@@ -59,10 +120,17 @@ prompt()
 		    i += strlen(cwd) - 1;
 		    break;
 		case '~':
+		    regex_t regex;
 		    cwd = getcwd(cwd, PROMPT_BUFFER);
+		    char *home = getenv("HOME");
 		    if (!cwd) {
 			continue;
 		    } 
+		    if (regcomp(&regex, home, 0) == 0) {
+			if (regexec(&regex, cwd, 0, NULL, 0) == 0) {
+			    cwd = str_replace(cwd, home, "~");
+			}
+		    }
 		    strintr(shell_prompt->str, i + 2, cwd);
 		    i += strlen(cwd) - 1;
 		    break;
