@@ -45,9 +45,9 @@ sighandler(int sig){
     rl_line_buffer[rl_point = rl_end = rl_mark = 0] = 0;
     write(1, "\n", 1);
     sigint_flag++;
-    /* rl_on_new_line(); */
-    /* rl_replace_line("", 0); */
-    /* rl_redisplay(); */
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
     return;
 }
 

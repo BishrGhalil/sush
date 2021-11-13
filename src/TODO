@@ -1,0 +1,28 @@
+# TODO
+## bugs:
+   - [ ] Find unfreed allocation
+## features:
+- [X] a better prompt:
+  - [X] prompt parser
+  - [X] get login name
+  - [X] get current working directory
+  - [X] get host name
+  - [X] get current time
+  - [X] parse the time
+  - [X] replace $HOME with '~'
+- [X] prev commands list (readline.h)
+  - [X] up to show prev commands
+- [X] quoting and backslash escaping:
+  - [X] qouted argument as one argument
+- [ ] keys handling
+  - [X] KEY_UP ==> prev commands
+  - [X] Ctrl+C ==> kill proces
+  - [ ] !! prev command
+- [ ] more builtins:
+  - [X] prompt setup
+  - [ ] alias
+  - [X] history
+  - [X] colors
+  - [ ] autosuggest
+  - [X] tab complete
+- [ ] config file
