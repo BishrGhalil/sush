@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>
+#include <setjmp.h>
 #include <unistd.h>
 #include <errno.h>
 #include <stdbool.h>
@@ -35,19 +36,13 @@
 #include "datetime.h"
 
 int sigint_flag = 0;
+sigjmp_buf env; 
 
 void
 sighandler(int sig){
 
-    rl_free_line_state ();
-    rl_cleanup_after_signal ();
-    RL_UNSETSTATE(RL_STATE_ISEARCH|RL_STATE_NSEARCH|RL_STATE_VIMOTION|RL_STATE_NUMERICARG|RL_STATE_MULTIKEY);
-    rl_line_buffer[rl_point = rl_end = rl_mark = 0] = 0;
-    write(1, "\n", 1);
     sigint_flag++;
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
+    siglongjmp(env, -1);
     return;
 }
 
@@ -69,7 +64,8 @@ shell_loop(void)
 	time_str = dt_datetime();
 	char *shell_prompt = prompt();
 	if(!(line = readline(shell_prompt))) {
-	    continue;
+	    printf("\n");
+	    exit(0);
 	}
 
 	if (strcmp(line, "exit") == 0) {
@@ -95,7 +91,23 @@ shell_loop(void)
 int
 main(int argc, char **argv)
 {
+    struct sigaction handler;
     errno = 0;
+
+    if (sigsetjmp(env, 1) == -1) {
+
+    rl_free_line_state ();
+    rl_cleanup_after_signal ();
+    RL_UNSETSTATE(RL_STATE_ISEARCH|RL_STATE_NSEARCH|RL_STATE_VIMOTION|RL_STATE_NUMERICARG|RL_STATE_MULTIKEY);
+    rl_line_buffer[rl_point = rl_end = rl_mark = 0] = 0;
+    write(1, "\n", 1);
+    }
+
+    handler.sa_handler = sighandler;
+    sigemptyset(&handler.sa_mask);
+    handler.sa_flags = 0;
+    sigaction(SIGINT, &handler, NULL);
+    sigaction(SIGTSTP, &handler, NULL);
     // Init history
     using_history();
 
